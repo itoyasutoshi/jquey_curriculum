@@ -21,7 +21,15 @@
 </div>
 <script src="../../common/js/jquery.js"></script>
 <script>
-// 今回やるのはモーダルです。
+  $(function() {
+    $('.modal-show').on('click', function() {
+      $('.modal').css('z-index','1').fadeIn('linear');
+    });
+    $('.modal-close').on('click', function() {
+      $('.modal').fadeOut('linear');
+    });
+  } );
+// 今7回やるのはモーダルです。
 // .modal-show をクリックすることで .modal をfadeInさせる。
 // .modal-close をクリックで .modal をfadeOutさせる。
 // .click() クリック時のイベントを登録する。

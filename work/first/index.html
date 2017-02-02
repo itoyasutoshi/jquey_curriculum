@@ -69,56 +69,53 @@
 </div>
 <script src="../../common/js/jquery.js"></script>
 <script>
-  $(function(){
+  $(function() {
     // q1
-    $("#q1").on("click",function(){
-      $(this).css("color", "red");
+    $('#q1').on('click',function() {
+      $(this).css('color', 'red');
     });
     // q2
-    $("#q2").on("click",function(){
-      $(this).css("background-color","cadetblue");
+    $('#q2').on('click',function() {
+      $(this).css('background-color','cadetblue');
     });
     // q3
-    $("#q3").on("click",function(){
+    $('#q3').on('click',function() {
       $(this).fadeOut(2000);
     });
     // q4
-    $("#q4").on("click",function(){
-      $(this).before("<span>DOMの前</span>").after("<span>DOMの後</span>").prepend("<span>DOMの中の前</span>").append("<span>DOMの中の後</span>");
+    $('#q4').on('click',function() {
+      $(this).before('<span>DOMの前</span>').after('<span>DOMの後</span>').prepend('<span>DOMの中の前</span>').append('<span>DOMの中の後</span>');
     });
     // q5
-    $("#q5").on("click",function(){
-      $(this).addClass("large");
+    $('#q5').on('click',function() {
+      $(this).addClass('large');
     });
     // q6
-    $("#q6").on("click",function(){
+    $('#q6').on('click',function() {
       $(this).animate({'margin-top':'100px','margin-left':'100px'},2000);
     });
     // q7
-    $("#q7 li:first-child").on("click",function(){
-      alert("1");
-    });$("#q7 li:eq(1)").on("click",function(){
-      alert("2");
-    });$("#q7 li:eq(2)").on("click",function(){
-      alert("3");
-    });$("#q7 li:eq(3)").on("click",function(){
-      alert("4");
+    $('#q7').find('li').on('click', function() {
+      var num = $(this).index();
+
+      alert(num);
     });
     // q8
-    $("#q8").mouseover(function(){
-      $(this).addClass("large");
-    }).mouseout(function(){
-      $(this).removeClass("large");
+    $('#q8').mouseover(function() {
+      $(this).addClass('large');
+    }).mouseout(function() {
+      $(this).removeClass('large');
     });
     // q9
-    $("#q9").on("click",function(){
-      var contents = $(this).attr("data-text");
+    $('#q9').on('click', function() {
+      var contents = $(this).attr('data-text');
       console.log(contents);
     });
     // q10
-    $("#q10 li").on("click",function(){
+    $('#q10 li').on('click', function() {
       var num = $(this).index();
-      $("#q11 li").eq(num).addClass('large');
+
+      $('#q11 li').eq(num).addClass('large');
     });
   });
 // 第1問  id='q1'の要素の文字色を赤色にせよ。
