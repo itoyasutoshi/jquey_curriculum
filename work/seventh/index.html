@@ -26,34 +26,33 @@
 </div>
 <script src="../../common/js/jquery.js"></script>
 <script>
-  var $slideWidth = $('.slider-list').find('li').width();
-  var $slideLength = $('.slider-list').find('li').length;
+  var $item = $('.slider-list').find('li');
+  var $slideWidth = $item.width();
+  var $slideLength = $item.length;
   var $slideNum = 0;
-
   var $sliding = (function() {
-    if($slideNum > 0) {
-      $slideNum = -$slideLength + 1;
-    } else if ($slideNum <= -$slideLength) {
+    if($slideNum < 0) {
+      $slideNum = $slideLength - 1;
+    } else if ($slideNum >= $slideLength) {
       $slideNum = 0;
     }
     $('.slider-list').stop().animate({
-      left : $slideNum * $slideWidth
+      left : -$slideNum * $slideWidth
     });
   });
+  // クリックした時の処理
   $('.slider-ctrl-btn').on('click', function() {
     var $btnData = $(this).data('ctrl');
     if ($btnData === 'prev') {
-      $slideNum++;
-      $sliding();
-      console.log($slideNum);
-    } else if ($btnData === 'next') {
       $slideNum--;
       $sliding();
       console.log($slideNum);
+    } else if ($btnData === 'next') {
+      $slideNum++;
+      $sliding();
+      console.log($slideNum);
     }
-    console.log($sliding);
   });
-
 
 
 // 今回やるのはスライドショーです。
