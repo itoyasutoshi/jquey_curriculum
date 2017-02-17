@@ -43,23 +43,16 @@
     });
 
     $('.menu__btn').on('click', function() {
-
       var $clickData = $(this).data('scroll-place-type');
-      var $contentsList = $('.contents').find('.title');
-      var $arr = [];
-      $contentsList.each(function() {
-        var $listData = $(this).data('scroll-place-type');
+      var $list = $('.contents').find('.title');
 
-        console.log($listData);
-        $arr.push($listData);
+      $list.each(function() {
+        var $titleData = $(this).data('scroll-place-type');
+
+        if($clickData === $titleData) {
+          $('body').animate({scrollTop: $(this).offset().top});
+        }
       });
-      if ($clickData === 'home') {
-        $('body').animate({scrollTop: $arr[0].offset().top});
-      } else if ($clickData === 'news') {
-        $('body').animate({scrollTop: $arr[1].offset().top});
-      } else if ($clickData === 'about') {
-        $('body').animate({scrollTop: $arr[2].offset().top});
-      }
     });
   });
 
