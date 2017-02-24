@@ -26,6 +26,61 @@
 </div>
 <script src="../../common/js/jquery.js"></script>
 <script>
+$(function(){
+  $('#js-search-button').on('click', function(){
+    word = $('#js-search-word').val();
+    ajaxSearch(word);
+  });
+
+  function ajaxSearch(word){
+    $.ajax({
+      url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
+      type: 'GET',
+      datatype: 'json',
+      data: {
+        applicationId: '1019399324990976605',
+        keyword: word,
+        format: 'post',
+        hits: '20',
+        page: '1'
+      }
+    }).done(function(data){
+      getItem(data);
+      console.log(data);
+    }).fail(function(result){
+      searchCanNot(result);
+    });
+  }
+
+  function getItem(data){
+    $('.lists').empty();
+    data.Items.forEach(function(item) {
+      console.log(item);
+      var template = `
+        <li class="lists__item">
+          <div class="lists__item__inner">
+            <a href="${item.Item.itemUrl}" class="lists__item__link" target="_blank">
+              <img src="${item.Item.largeImageUrl}" class="lists__item__img" alt="">
+              <p class="lists__item__detail">作品名： ${item.Item.title}</p>
+              <p class="lists__item__detail">作者 ： ${item.Item.author}</p>
+              <p class="lists__item__detail">出版社： ${item.Item.publisherName}</p>
+          </a>
+        </div>
+      </li>`;
+      $('.lists').append(template);
+    });
+    var $content = $('.lists').children('li').length;
+
+    if($content === 0) {
+      var $message = $('.lists').append('<p>検索結果が見つかりませんでした。<br>別のキーワードで検索して下さい。</p>').css('text-align','center');
+
+    };
+  }
+  function searchCanNot(result){
+    $('.lists').empty();
+    $('.lists').append('<li>キーワードを入力してください。</li>').css('text-align','center');
+  }
+});
 // 楽天ブックスの総合検索APIを使って製作してください。
 // answerの挙動を良く見てね！
 //
