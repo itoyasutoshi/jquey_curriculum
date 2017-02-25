@@ -27,12 +27,12 @@
 <script src="../../common/js/jquery.js"></script>
 <script>
 $(function(){
-  $('#js-search-button').on('click', function(){
-    word = $('#js-search-word').val();
-    ajaxSearch(word);
-  });
+  $('#js-search-button').on('click', function() {
+    var $word = $('#js-search-word').val();
 
-  function ajaxSearch(word){
+    ajaxSearch($word);
+  });
+  function ajaxSearch(word) {
     $.ajax({
       url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
       type: 'GET',
@@ -40,45 +40,39 @@ $(function(){
       data: {
         applicationId: '1019399324990976605',
         keyword: word,
-        format: 'post',
         hits: '20',
         page: '1'
       }
-    }).done(function(data){
+    }).done(function(data) {
       getItem(data);
-      console.log(data);
-    }).fail(function(result){
-      searchCanNot(result);
+    }).fail(function(fail) {
+      searchCanNot(fail);
     });
   }
+  function getItem(data) {
+    if(data.hits === 0) {
+      $('.lists').append('<p style="font-size: 16px; text-align: center;">検索結果が見つかりませんでした。<br>別のキーワードで検索して下さい。</p>');
+    } else {
+        $('.lists').empty();
+        data.Items.forEach(function(item) {
+          var $template =
+            '<li class="lists__item">' +
+               '<div class="lists__item__inner">' +
+                 '<a href="' + item.Item.itemUrl + '" class="lists__item__link" target="_blank">' +
+                   '<img src="' + item.Item.largeImageUrl +'" class="lists__item__img" alt="">' +
+                   '<p class="lists__item__detail">作品名：' + item.Item.title + '</p>' +
+                   '<p class="lists__item__detail">作者 ：' + item.Item.author + '</p>' +
+                   '<p class="lists__item__detail">出版社：' + item.Item.publisherName + '</p>' +
+               '</a>' +
+             '</div>' +
+          '</li>' ;
 
-  function getItem(data){
-    $('.lists').empty();
-    data.Items.forEach(function(item) {
-      console.log(item);
-      var template = `
-        <li class="lists__item">
-          <div class="lists__item__inner">
-            <a href="${item.Item.itemUrl}" class="lists__item__link" target="_blank">
-              <img src="${item.Item.largeImageUrl}" class="lists__item__img" alt="">
-              <p class="lists__item__detail">作品名： ${item.Item.title}</p>
-              <p class="lists__item__detail">作者 ： ${item.Item.author}</p>
-              <p class="lists__item__detail">出版社： ${item.Item.publisherName}</p>
-          </a>
-        </div>
-      </li>`;
-      $('.lists').append(template);
-    });
-    var $content = $('.lists').children('li').length;
-
-    if($content === 0) {
-      var $message = $('.lists').append('<p>検索結果が見つかりませんでした。<br>別のキーワードで検索して下さい。</p>').css('text-align','center');
-
-    };
+        $('.lists').append($template);
+      });
+    }
   }
-  function searchCanNot(result){
+  function searchCanNot(fail) {
     $('.lists').empty();
-    $('.lists').append('<li>キーワードを入力してください。</li>').css('text-align','center');
   }
 });
 // 楽天ブックスの総合検索APIを使って製作してください。
