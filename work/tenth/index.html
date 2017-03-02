@@ -26,16 +26,22 @@
 </div>
 <script src="../../common/js/jquery.js"></script>
 <script>
+
 $(function(){
   $('#js-search-button').on('click', function() {
-    var $word = $('#js-search-word').val();
+    $('.lists').empty();
+    var word = $('#js-search-word').val();
 
-    ajaxSearch($word);
+    if(word === "") {
+      $('.lists').append('<li style="font-size: 16px; text-align: center;">キーワードを入力してください。</li>');
+    } else {
+      ajaxSearch(word);
+    }
   });
   function ajaxSearch(word) {
     $.ajax({
       url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
-      type: 'GET',
+      type: 'POST',
       datatype: 'json',
       data: {
         applicationId: '1019399324990976605',
@@ -45,18 +51,16 @@ $(function(){
       }
     }).done(function(data) {
       getItem(data);
-    }).fail(function(fail) {
-      searchCanNot(fail);
+    }).fail(function(error) {
+      searchCanNot(error);
     });
-
   }
   function getItem(data) {
     if(data.hits === 0) {
-      $('.lists').append('<p style="font-size: 16px; text-align: center;">検索結果が見つかりませんでした。<br>別のキーワードで検索して下さい。</p>');
+      $('.lists').append('<li style="font-size: 16px; text-align: center;">検索結果が見つかりませんでした。<br>別のキーワードで検索して下さい。</li>');
     } else {
-        $('.lists').empty();
         data.Items.forEach(function(item) {
-          var $template =
+          var template =
             '<li class="lists__item">' +
                '<div class="lists__item__inner">' +
                  '<a href="' + item.Item.itemUrl + '" class="lists__item__link" target="_blank">' +
@@ -68,14 +72,16 @@ $(function(){
              '</div>' +
           '</li>' ;
 
-        $('.lists').append($template);
+        $('.lists').append(template);
       });
     }
   }
-  function searchCanNot(fail) {
-    $('.lists').empty();
+
+  function searchCanNot(error) {
+    alert('error!');
   }
 });
+
 // 楽天ブックスの総合検索APIを使って製作してください。
 // answerの挙動を良く見てね！
 //
